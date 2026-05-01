@@ -53,7 +53,7 @@ const Index = () => {
           <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,360px)_1fr] gap-10 lg:gap-16">
             {/* LEFT COLUMN */}
             <header className="flex flex-col gap-8 animate-fade-up">
-              <h1 className="font-display text-3xl sm:text-4xl lg:text-[2.5rem] leading-[1.05] font-bold tracking-tight uppercase text-gradient">
+              <h1 className="font-display text-3xl sm:text-4xl lg:text-[2.5rem] leading-[1.05] font-bold tracking-tight uppercase text-foreground">
                 {PROFILE.name}
               </h1>
 
