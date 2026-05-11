@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Phone, MessageCircle, Send, Heart, ChevronDown, ExternalLink } from "lucide-react";
+import { Phone, MessageCircle, Send, Heart, ChevronDown, ExternalLink, Copy, Check } from "lucide-react";
+import { toast } from "@/components/ui/sonner";
 import portrait from "@/assets/portrait.jpg";
 
 /**
@@ -44,6 +45,14 @@ const PROFILE = {
 
 const Index = () => {
   const [showDonate, setShowDonate] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = (text: string) => {
+    navigator.clipboard.writeText(text);
+    setCopied(true);
+    toast.success("Данные скопированы");
+    setTimeout(() => setCopied(false), 2000);
+  };
 
   return (
     <main className="min-h-screen w-full px-4 py-8 sm:px-8 sm:py-12 md:px-12 lg:px-16 lg:py-16">
@@ -165,13 +174,25 @@ const Index = () => {
 
                   {showDonate && (
                     <div className="animate-slide-down mt-4 overflow-hidden rounded-xl border border-hairline bg-surface-elevated/60 px-5 py-4">
-                      <p className="text-xs uppercase tracking-wider text-muted-foreground">Номер для перевода</p>
-                      <a
-                        href={`tel:${PROFILE.contacts.phoneRaw}`}
-                        className="mt-1 block font-display text-xl font-semibold tracking-wide text-foreground link-underline"
-                      >
-                        {PROFILE.donate}
-                      </a>
+                      <div className="flex items-center justify-between gap-4">
+                        <div>
+                          <p className="text-xs uppercase tracking-wider text-muted-foreground">Реквизиты</p>
+                          <p className="mt-1 font-display text-sm sm:text-base font-semibold tracking-wide text-foreground">
+                            {PROFILE.donate}
+                          </p>
+                        </div>
+                        <button
+                          onClick={() => handleCopy(PROFILE.donate)}
+                          aria-label="Скопировать реквизиты"
+                          className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-hairline bg-surface text-muted-foreground transition-all duration-300 hover:border-accent-glow/60 hover:text-accent-glow active:scale-95"
+                        >
+                          {copied ? (
+                            <Check className="h-4 w-4 text-accent-glow" />
+                          ) : (
+                            <Copy className="h-4 w-4" />
+                          )}
+                        </button>
+                      </div>
                     </div>
                   )}
                 </div>
