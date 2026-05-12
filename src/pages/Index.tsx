@@ -1,5 +1,6 @@
 import { useState } from "react";
-import { Phone, MessageCircle, Send, Heart, ChevronDown, ExternalLink } from "lucide-react";
+import { Phone, MessageCircle, Send, Heart, ChevronDown, ExternalLink, Copy, Check } from "lucide-react";
+import { toast } from "sonner";
 import portrait from "@/assets/portrait.jpg";
 
 /**
@@ -166,12 +167,15 @@ const Index = () => {
                   {showDonate && (
                     <div className="animate-slide-down mt-4 overflow-hidden rounded-xl border border-hairline bg-surface-elevated/60 px-5 py-4">
                       <p className="text-xs uppercase tracking-wider text-muted-foreground">Номер для перевода</p>
-                      <a
-                        href={`tel:${PROFILE.contacts.phoneRaw}`}
-                        className="mt-1 block font-display text-xl font-semibold tracking-wide text-foreground link-underline"
-                      >
-                        {PROFILE.donate}
-                      </a>
+                      <div className="mt-1 flex items-center justify-between gap-4">
+                        <a
+                          href={`tel:${PROFILE.contacts.phoneRaw}`}
+                          className="block font-display text-lg sm:text-xl font-semibold tracking-wide text-foreground link-underline"
+                        >
+                          {PROFILE.donate}
+                        </a>
+                        <CopyButton value={PROFILE.donate} />
+                      </div>
                     </div>
                   )}
                 </div>
@@ -202,6 +206,33 @@ const Section = ({ title, children }: { title: string; children: React.ReactNode
   </div>
 );
 
+const CopyButton = ({ value }: { value: string }) => {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    try {
+      await navigator.clipboard.writeText(value);
+      setCopied(true);
+      toast.success("Скопировано в буфер обмена");
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      toast.error("Не удалось скопировать");
+    }
+  };
+
+  return (
+    <button
+      onClick={handleCopy}
+      aria-label="Скопировать"
+      className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-hairline bg-surface text-muted-foreground transition-all duration-300 hover:border-accent-glow/60 hover:text-accent-glow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-accent-glow"
+    >
+      {copied ? <Check className="h-4 w-4 text-green-500" /> : <Copy className="h-4 w-4" />}
+    </button>
+  );
+};
+
 const ContactRow = ({
   icon,
   href,
@@ -216,21 +247,24 @@ const ContactRow = ({
   external?: boolean;
 }) => (
   <li>
-    <a
-      href={href}
-      {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-      className="group flex items-center gap-3 rounded-lg px-2 py-1.5 -mx-2 transition-all duration-300 hover:bg-surface-elevated/60"
-    >
-      <span className="flex h-9 w-9 items-center justify-center rounded-full border border-hairline bg-surface text-muted-foreground transition-all duration-300 group-hover:border-accent-glow/60 group-hover:text-accent-glow">
-        {icon}
-      </span>
-      <span className="flex flex-col">
-        <span className="text-[15px] text-foreground/90 transition-colors group-hover:text-foreground">
-          {label}
+    <div className="group flex items-center justify-between gap-3 rounded-lg px-2 py-1.5 -mx-2 transition-all duration-300 hover:bg-surface-elevated/60">
+      <a
+        href={href}
+        {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+        className="flex flex-1 items-center gap-3"
+      >
+        <span className="flex h-9 w-9 items-center justify-center rounded-full border border-hairline bg-surface text-muted-foreground transition-all duration-300 group-hover:border-accent-glow/60 group-hover:text-accent-glow">
+          {icon}
         </span>
-        {sub && <span className="text-xs text-muted-foreground">{sub}</span>}
-      </span>
-    </a>
+        <span className="flex flex-col">
+          <span className="text-[15px] text-foreground/90 transition-colors group-hover:text-foreground">
+            {label}
+          </span>
+          {sub && <span className="text-xs text-muted-foreground">{sub}</span>}
+        </span>
+      </a>
+      <CopyButton value={label} />
+    </div>
   </li>
 );
 
