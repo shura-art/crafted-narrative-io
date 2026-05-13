@@ -1,0 +1,3 @@
+## 2025-05-14 - Copy-to-Check Clipboard Pattern
+**Learning:** For critical data like payment details, phone numbers, or addresses, providing a dedicated copy button with immediate visual feedback (icon swap from Copy to Check) and a success toast notification significantly reduces user friction. Importantly, this enhancement should supplement rather than replace existing native functionality (like `tel:` or `mailto:` links) to maintain flexible interaction options.
+**Action:** Implement a temporary icon swap and success toast for all clipboard actions, ensuring that the primary value remains interactive (e.g., clickable links) where appropriate.
