@@ -1,6 +1,7 @@
 import { useState } from "react";
-import { Phone, MessageCircle, Send, Heart, ChevronDown, ExternalLink } from "lucide-react";
+import { Phone, MessageCircle, Send, Heart, ChevronDown, ExternalLink, Copy, Check } from "lucide-react";
 import portrait from "@/assets/portrait.jpg";
+import { toast } from "sonner";
 
 /**
  * ╔══════════════════════════════════════════════════════════╗
@@ -44,6 +45,18 @@ const PROFILE = {
 
 const Index = () => {
   const [showDonate, setShowDonate] = useState(false);
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async () => {
+    try {
+      await navigator.clipboard.writeText(PROFILE.donate);
+      setCopied(true);
+      toast.success("Номер скопирован в буфер обмена");
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      toast.error("Не удалось скопировать номер");
+    }
+  };
 
   return (
     <main className="min-h-screen w-full px-4 py-8 sm:px-8 sm:py-12 md:px-12 lg:px-16 lg:py-16">
@@ -113,7 +126,10 @@ const Index = () => {
                   className="group inline-flex items-center gap-2 link-underline text-[15px] text-foreground/90"
                 >
                   {PROFILE.portfolioLabel}
-                  <ExternalLink className="h-4 w-4 opacity-60 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5" />
+                  <ExternalLink
+                    aria-hidden="true"
+                    className="h-4 w-4 opacity-60 transition-transform group-hover:translate-x-0.5 group-hover:-translate-y-0.5"
+                  />
                 </a>
               </Section>
             </section>
@@ -127,18 +143,18 @@ const Index = () => {
                 <SectionTitle>Связаться со мной</SectionTitle>
                 <ul className="mt-5 space-y-3">
                   <ContactRow
-                    icon={<Phone className="h-4 w-4" />}
+                    icon={<Phone aria-hidden="true" className="h-4 w-4" />}
                     href={`tel:${PROFILE.contacts.phoneRaw}`}
                     label={PROFILE.contacts.phone}
                   />
                   <ContactRow
-                    icon={<MessageCircle className="h-4 w-4" />}
+                    icon={<MessageCircle aria-hidden="true" className="h-4 w-4" />}
                     href={PROFILE.contacts.viber}
                     label={PROFILE.contacts.phone}
                     sub="Viber"
                   />
                   <ContactRow
-                    icon={<Send className="h-4 w-4" />}
+                    icon={<Send aria-hidden="true" className="h-4 w-4" />}
                     href={PROFILE.contacts.telegram}
                     label={PROFILE.contacts.telegramLabel}
                     sub="Telegram"
@@ -156,22 +172,41 @@ const Index = () => {
                     aria-expanded={showDonate}
                     className="group relative inline-flex items-center gap-2.5 overflow-hidden rounded-full border border-hairline bg-surface-elevated px-6 py-3 text-sm font-medium text-foreground/90 transition-all duration-300 hover:border-accent-glow/60 hover:bg-surface-elevated hover:text-foreground hover:shadow-[var(--shadow-glow)] active:scale-[0.98]"
                   >
-                    <Heart className="h-4 w-4 text-accent-glow transition-transform duration-300 group-hover:scale-110" />
+                    <Heart
+                      aria-hidden="true"
+                      className="h-4 w-4 text-accent-glow transition-transform duration-300 group-hover:scale-110"
+                    />
                     Поддержать проект
                     <ChevronDown
+                      aria-hidden="true"
                       className={`h-4 w-4 opacity-70 transition-transform duration-300 ${showDonate ? "rotate-180" : ""}`}
                     />
                   </button>
 
                   {showDonate && (
                     <div className="animate-slide-down mt-4 overflow-hidden rounded-xl border border-hairline bg-surface-elevated/60 px-5 py-4">
-                      <p className="text-xs uppercase tracking-wider text-muted-foreground">Номер для перевода</p>
-                      <a
-                        href={`tel:${PROFILE.contacts.phoneRaw}`}
-                        className="mt-1 block font-display text-xl font-semibold tracking-wide text-foreground link-underline"
-                      >
-                        {PROFILE.donate}
-                      </a>
+                      <div className="flex items-start justify-between gap-4">
+                        <div className="flex-1">
+                          <p className="text-xs uppercase tracking-wider text-muted-foreground">Номер для перевода</p>
+                          <a
+                            href={`tel:${PROFILE.contacts.phoneRaw}`}
+                            className="mt-1 block font-display text-xl font-semibold tracking-wide text-foreground link-underline"
+                          >
+                            {PROFILE.donate}
+                          </a>
+                        </div>
+                        <button
+                          onClick={handleCopy}
+                          aria-label="Копировать номер для перевода"
+                          className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-hairline bg-surface text-muted-foreground transition-all duration-300 hover:border-accent-glow/60 hover:text-accent-glow hover:shadow-[0_0_15px_rgba(var(--accent-glow-rgb),0.2)]"
+                        >
+                          {copied ? (
+                            <Check aria-hidden="true" className="h-4 w-4" />
+                          ) : (
+                            <Copy aria-hidden="true" className="h-4 w-4" />
+                          )}
+                        </button>
+                      </div>
                     </div>
                   )}
                 </div>
