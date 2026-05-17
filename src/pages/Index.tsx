@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Phone, MessageCircle, Send, Heart, ChevronDown, ExternalLink, Copy, Check } from "lucide-react";
 import portrait from "@/assets/portrait.jpg";
 import { toast } from "sonner";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 /**
  * ╔══════════════════════════════════════════════════════════╗
@@ -146,12 +147,14 @@ const Index = () => {
                     icon={<Phone aria-hidden="true" className="h-4 w-4" />}
                     href={`tel:${PROFILE.contacts.phoneRaw}`}
                     label={PROFILE.contacts.phone}
+                    copyValue={PROFILE.contacts.phone}
                   />
                   <ContactRow
                     icon={<MessageCircle aria-hidden="true" className="h-4 w-4" />}
                     href={PROFILE.contacts.viber}
                     label={PROFILE.contacts.phone}
                     sub="Viber"
+                    copyValue={PROFILE.contacts.phone}
                   />
                   <ContactRow
                     icon={<Send aria-hidden="true" className="h-4 w-4" />}
@@ -159,6 +162,7 @@ const Index = () => {
                     label={PROFILE.contacts.telegramLabel}
                     sub="Telegram"
                     external
+                    copyValue={PROFILE.contacts.telegramLabel}
                   />
                 </ul>
               </div>
@@ -195,17 +199,24 @@ const Index = () => {
                             {PROFILE.donate}
                           </a>
                         </div>
-                        <button
-                          onClick={handleCopy}
-                          aria-label="Копировать номер для перевода"
-                          className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-hairline bg-surface text-muted-foreground transition-all duration-300 hover:border-accent-glow/60 hover:text-accent-glow hover:shadow-[0_0_15px_rgba(var(--accent-glow-rgb),0.2)]"
-                        >
-                          {copied ? (
-                            <Check aria-hidden="true" className="h-4 w-4" />
-                          ) : (
-                            <Copy aria-hidden="true" className="h-4 w-4" />
-                          )}
-                        </button>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <button
+                              onClick={handleCopy}
+                              aria-label="Копировать номер для перевода"
+                              className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-hairline bg-surface text-muted-foreground transition-all duration-300 hover:border-accent-glow/60 hover:text-accent-glow hover:shadow-[0_0_15px_rgba(var(--accent-glow-rgb),0.2)]"
+                            >
+                              {copied ? (
+                                <Check aria-hidden="true" className="h-4 w-4" />
+                              ) : (
+                                <Copy aria-hidden="true" className="h-4 w-4" />
+                              )}
+                            </button>
+                          </TooltipTrigger>
+                          <TooltipContent side="left">
+                            <p>Копировать</p>
+                          </TooltipContent>
+                        </Tooltip>
                       </div>
                     </div>
                   )}
@@ -243,30 +254,64 @@ const ContactRow = ({
   label,
   sub,
   external,
+  copyValue,
 }: {
   icon: React.ReactNode;
   href: string;
   label: string;
   sub?: string;
   external?: boolean;
-}) => (
-  <li>
-    <a
-      href={href}
-      {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-      className="group flex items-center gap-3 rounded-lg px-2 py-1.5 -mx-2 transition-all duration-300 hover:bg-surface-elevated/60"
-    >
-      <span className="flex h-9 w-9 items-center justify-center rounded-full border border-hairline bg-surface text-muted-foreground transition-all duration-300 group-hover:border-accent-glow/60 group-hover:text-accent-glow">
-        {icon}
-      </span>
-      <span className="flex flex-col">
-        <span className="text-[15px] text-foreground/90 transition-colors group-hover:text-foreground">
-          {label}
+  copyValue?: string;
+}) => {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async () => {
+    if (!copyValue) return;
+    try {
+      await navigator.clipboard.writeText(copyValue);
+      setCopied(true);
+      toast.success("Скопировано в буфер обмена");
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      toast.error("Не удалось скопировать");
+    }
+  };
+
+  return (
+    <li className="group relative flex items-center gap-3 rounded-lg px-2 py-1.5 -mx-2 transition-all duration-300 hover:bg-surface-elevated/60">
+      <a
+        href={href}
+        {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+        className="flex flex-1 items-center gap-3"
+      >
+        <span className="flex h-9 w-9 items-center justify-center rounded-full border border-hairline bg-surface text-muted-foreground transition-all duration-300 group-hover:border-accent-glow/60 group-hover:text-accent-glow">
+          {icon}
         </span>
-        {sub && <span className="text-xs text-muted-foreground">{sub}</span>}
-      </span>
-    </a>
-  </li>
-);
+        <span className="flex flex-col">
+          <span className="text-[15px] text-foreground/90 transition-colors group-hover:text-foreground">
+            {label}
+          </span>
+          {sub && <span className="text-xs text-muted-foreground">{sub}</span>}
+        </span>
+      </a>
+      {copyValue && (
+        <Tooltip>
+          <TooltipTrigger asChild>
+            <button
+              onClick={handleCopy}
+              aria-label={`Копировать ${label}`}
+              className="opacity-0 group-hover:opacity-100 flex h-8 w-8 items-center justify-center rounded-full transition-all duration-300 hover:bg-surface-elevated hover:text-accent-glow focus:opacity-100"
+            >
+              {copied ? <Check className="h-3.5 w-3.5" /> : <Copy className="h-3.5 w-3.5" />}
+            </button>
+          </TooltipTrigger>
+          <TooltipContent side="right">
+            <p>Копировать</p>
+          </TooltipContent>
+        </Tooltip>
+      )}
+    </li>
+  );
+};
 
 export default Index;
