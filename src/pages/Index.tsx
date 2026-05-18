@@ -123,6 +123,7 @@ const Index = () => {
                   href={PROFILE.portfolioUrl}
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label={`Портфолио: ${PROFILE.portfolioLabel} — открывается в новой вкладке`}
                   className="group inline-flex items-center gap-2 link-underline text-[15px] text-foreground/90"
                 >
                   {PROFILE.portfolioLabel}
@@ -146,12 +147,14 @@ const Index = () => {
                     icon={<Phone aria-hidden="true" className="h-4 w-4" />}
                     href={`tel:${PROFILE.contacts.phoneRaw}`}
                     label={PROFILE.contacts.phone}
+                    copyValue={PROFILE.contacts.phone}
                   />
                   <ContactRow
                     icon={<MessageCircle aria-hidden="true" className="h-4 w-4" />}
                     href={PROFILE.contacts.viber}
                     label={PROFILE.contacts.phone}
                     sub="Viber"
+                    copyValue={PROFILE.contacts.phone}
                   />
                   <ContactRow
                     icon={<Send aria-hidden="true" className="h-4 w-4" />}
@@ -159,6 +162,7 @@ const Index = () => {
                     label={PROFILE.contacts.telegramLabel}
                     sub="Telegram"
                     external
+                    copyValue={PROFILE.contacts.telegramLabel}
                   />
                 </ul>
               </div>
@@ -243,30 +247,74 @@ const ContactRow = ({
   label,
   sub,
   external,
+  copyValue,
 }: {
   icon: React.ReactNode;
   href: string;
   label: string;
   sub?: string;
   external?: boolean;
-}) => (
-  <li>
-    <a
-      href={href}
-      {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-      className="group flex items-center gap-3 rounded-lg px-2 py-1.5 -mx-2 transition-all duration-300 hover:bg-surface-elevated/60"
-    >
-      <span className="flex h-9 w-9 items-center justify-center rounded-full border border-hairline bg-surface text-muted-foreground transition-all duration-300 group-hover:border-accent-glow/60 group-hover:text-accent-glow">
-        {icon}
-      </span>
-      <span className="flex flex-col">
-        <span className="text-[15px] text-foreground/90 transition-colors group-hover:text-foreground">
-          {label}
+  copyValue?: string;
+}) => {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = async (e: React.MouseEvent) => {
+    if (!copyValue) return;
+    e.preventDefault();
+    e.stopPropagation();
+    try {
+      await navigator.clipboard.writeText(copyValue);
+      setCopied(true);
+      toast.success("Скопировано в буфер обмена");
+      setTimeout(() => setCopied(false), 2000);
+    } catch (err) {
+      toast.error("Не удалось скопировать");
+    }
+  };
+
+  return (
+    <li className="group/row flex items-center gap-2">
+      <a
+        href={href}
+        {...(external
+          ? {
+              target: "_blank",
+              rel: "noopener noreferrer",
+              "aria-label": `${label}${sub ? ` (${sub})` : ""} — открывается в новой вкладке`,
+            }
+          : {})}
+        className="group flex flex-1 items-center gap-3 rounded-xl px-3 py-2 transition-all duration-300 hover:bg-surface-elevated/60"
+      >
+        <span className="flex h-10 w-10 items-center justify-center rounded-full border border-hairline bg-surface text-muted-foreground transition-all duration-300 group-hover:border-accent-glow/60 group-hover:text-accent-glow">
+          {icon}
         </span>
-        {sub && <span className="text-xs text-muted-foreground">{sub}</span>}
-      </span>
-    </a>
-  </li>
-);
+        <span className="flex flex-col">
+          <span className="text-[15px] font-medium text-foreground/90 transition-colors group-hover:text-foreground">
+            {label}
+          </span>
+          {sub && <span className="text-xs text-muted-foreground">{sub}</span>}
+        </span>
+      </a>
+
+      {copyValue && (
+        <button
+          onClick={handleCopy}
+          aria-label={`Копировать ${sub || "контакт"}`}
+          className={`flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-hairline bg-surface transition-all duration-300 sm:opacity-0 sm:group-hover/row:opacity-100 focus-visible:opacity-100 ${
+            copied
+              ? "border-accent-glow/60 text-accent-glow"
+              : "text-muted-foreground hover:border-accent-glow/60 hover:text-accent-glow hover:shadow-[0_0_15px_rgba(var(--accent-glow-rgb),0.2)]"
+          }`}
+        >
+          {copied ? (
+            <Check aria-hidden="true" className="h-4 w-4" />
+          ) : (
+            <Copy aria-hidden="true" className="h-4 w-4" />
+          )}
+        </button>
+      )}
+    </li>
+  );
+};
 
 export default Index;
