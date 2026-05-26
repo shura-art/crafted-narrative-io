@@ -2,6 +2,7 @@ import { useState } from "react";
 import { Phone, MessageCircle, Send, Heart, ChevronDown, ExternalLink, Copy, Check } from "lucide-react";
 import portrait from "@/assets/portrait.jpg";
 import { toast } from "sonner";
+import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
 /**
  * ╔══════════════════════════════════════════════════════════╗
@@ -123,6 +124,7 @@ const Index = () => {
                   href={PROFILE.portfolioUrl}
                   target="_blank"
                   rel="noopener noreferrer"
+                  aria-label={`${PROFILE.portfolioLabel} — откроется в новой вкладке`}
                   className="group inline-flex items-center gap-2 link-underline text-[15px] text-foreground/90"
                 >
                   {PROFILE.portfolioLabel}
@@ -159,6 +161,7 @@ const Index = () => {
                     label={PROFILE.contacts.telegramLabel}
                     sub="Telegram"
                     external
+                    ariaLabel={`${PROFILE.contacts.telegramLabel} — откроется в новой вкладке`}
                   />
                 </ul>
               </div>
@@ -168,6 +171,7 @@ const Index = () => {
                 <SectionTitle>Помощь проекту</SectionTitle>
                 <div className="mt-5">
                   <button
+                    type="button"
                     onClick={() => setShowDonate((s) => !s)}
                     aria-expanded={showDonate}
                     className="group relative inline-flex items-center gap-2.5 overflow-hidden rounded-full border border-hairline bg-surface-elevated px-6 py-3 text-sm font-medium text-foreground/90 transition-all duration-300 hover:border-accent-glow/60 hover:bg-surface-elevated hover:text-foreground hover:shadow-[var(--shadow-glow)] active:scale-[0.98]"
@@ -195,17 +199,25 @@ const Index = () => {
                             {PROFILE.donate}
                           </a>
                         </div>
-                        <button
-                          onClick={handleCopy}
-                          aria-label="Копировать номер для перевода"
-                          className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-hairline bg-surface text-muted-foreground transition-all duration-300 hover:border-accent-glow/60 hover:text-accent-glow hover:shadow-[0_0_15px_rgba(var(--accent-glow-rgb),0.2)]"
-                        >
-                          {copied ? (
-                            <Check aria-hidden="true" className="h-4 w-4" />
-                          ) : (
-                            <Copy aria-hidden="true" className="h-4 w-4" />
-                          )}
-                        </button>
+                        <Tooltip>
+                          <TooltipTrigger asChild>
+                            <button
+                              type="button"
+                              onClick={handleCopy}
+                              aria-label={copied ? "Скопировано" : "Копировать номер для перевода"}
+                              className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-hairline bg-surface text-muted-foreground transition-all duration-300 hover:border-accent-glow/60 hover:text-accent-glow hover:shadow-[0_0_15px_rgba(var(--accent-glow-rgb),0.2)] focus-visible:ring-2 focus-visible:ring-accent-glow/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background outline-none"
+                            >
+                              {copied ? (
+                                <Check aria-hidden="true" className="h-4 w-4" />
+                              ) : (
+                                <Copy aria-hidden="true" className="h-4 w-4" />
+                              )}
+                            </button>
+                          </TooltipTrigger>
+                          <TooltipContent>
+                            <p>{copied ? "Скопировано" : "Копировать номер"}</p>
+                          </TooltipContent>
+                        </Tooltip>
                       </div>
                     </div>
                   )}
@@ -243,17 +255,20 @@ const ContactRow = ({
   label,
   sub,
   external,
+  ariaLabel,
 }: {
   icon: React.ReactNode;
   href: string;
   label: string;
   sub?: string;
   external?: boolean;
+  ariaLabel?: string;
 }) => (
   <li>
     <a
       href={href}
       {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
+      aria-label={ariaLabel}
       className="group flex items-center gap-3 rounded-lg px-2 py-1.5 -mx-2 transition-all duration-300 hover:bg-surface-elevated/60"
     >
       <span className="flex h-9 w-9 items-center justify-center rounded-full border border-hairline bg-surface text-muted-foreground transition-all duration-300 group-hover:border-accent-glow/60 group-hover:text-accent-glow">
