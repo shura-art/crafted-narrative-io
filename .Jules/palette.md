@@ -5,3 +5,7 @@
 ## 2026-05-17 - Fix tooltip clipping in containers with overflow: hidden
 **Learning:** Tooltips rendered within containers using `overflow: hidden` (like the glass-panel sections) will be clipped unless wrapped in a Portal. This is critical for ensure that micro-feedback remains visible.
 **Action:** Always use `TooltipPrimitive.Portal` in the base Tooltip component to ensure it renders at the root level and avoids clipping.
+
+## 2025-05-14 - Accessible Focus Indicators in Dark Glow Themes
+**Learning:** In UIs with dark backgrounds and glowing accent effects (like HSL-based glow systems), default browser focus rings often have poor contrast or clash visually. Using the theme's own glow tokens for `focus-visible` creates a cohesive and accessible experience.
+**Action:** Always pair `focus-visible:ring-2` with the project's primary glow color (e.g., `accent-glow`) and use `focus-visible:ring-offset-2` to ensure the indicator is distinct from the element's border.
