@@ -60,8 +60,15 @@ const Index = () => {
   };
 
   return (
-    <main className="min-h-screen w-full px-4 py-8 sm:px-8 sm:py-12 md:px-12 lg:px-16 lg:py-16">
-      <div className="mx-auto w-full max-w-7xl">
+    <>
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:fixed focus:top-4 focus:left-4 focus:z-[100] focus:px-4 focus:py-2 focus:bg-surface-elevated focus:text-accent-glow focus:border focus:border-accent-glow/60 focus:rounded-lg focus:shadow-[var(--shadow-glow)] focus:outline-none focus:ring-2 focus:ring-accent-glow/60 focus:ring-offset-2 focus:ring-offset-background transition-all duration-200"
+      >
+        Перейти к основному содержимому
+      </a>
+      <main id="main-content" tabIndex={-1} className="min-h-screen w-full px-4 py-8 sm:px-8 sm:py-12 md:px-12 lg:px-16 lg:py-16 outline-none">
+        <div className="mx-auto w-full max-w-7xl">
         <article className="glass-panel rounded-3xl p-6 sm:p-10 md:p-14 lg:p-16 animate-fade-in">
           {/* ── HEADER GRID ─────────────────────────────── */}
           <div className="grid grid-cols-1 lg:grid-cols-[minmax(0,360px)_1fr] gap-10 lg:gap-16">
@@ -228,11 +235,12 @@ const Index = () => {
           </div>
         </article>
 
-        <footer className="mt-8 text-center text-xs text-muted-foreground/60">
-          © {new Date().getFullYear()} {PROFILE.name}
-        </footer>
-      </div>
-    </main>
+          <footer className="mt-8 text-center text-xs text-muted-foreground/60">
+            © {new Date().getFullYear()} {PROFILE.name}
+          </footer>
+        </div>
+      </main>
+    </>
   );
 };
 
