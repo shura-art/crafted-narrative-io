@@ -5,3 +5,7 @@
 ## 2026-05-17 - Fix tooltip clipping in containers with overflow: hidden
 **Learning:** Tooltips rendered within containers using `overflow: hidden` (like the glass-panel sections) will be clipped unless wrapped in a Portal. This is critical for ensure that micro-feedback remains visible.
 **Action:** Always use `TooltipPrimitive.Portal` in the base Tooltip component to ensure it renders at the root level and avoids clipping.
+
+## 2026-05-18 - Maintain language consistency across boilerplate
+**Learning:** In a project where content is localized (e.g., Russian profile) but the underlying boilerplate and error pages are in another language (e.g., English), keep new accessibility features and boilerplate updates in the project's original language to avoid breaking consistency.
+**Action:** Match the language of the file being edited or the project's general boilerplate rather than the localized content.
