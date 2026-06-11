@@ -5,3 +5,7 @@
 ## 2026-05-17 - Fix tooltip clipping in containers with overflow: hidden
 **Learning:** Tooltips rendered within containers using `overflow: hidden` (like the glass-panel sections) will be clipped unless wrapped in a Portal. This is critical for ensure that micro-feedback remains visible.
 **Action:** Always use `TooltipPrimitive.Portal` in the base Tooltip component to ensure it renders at the root level and avoids clipping.
+
+## 2025-05-22 - Implement Skip to Content link for keyboard accessibility
+**Learning:** In Single Page Applications (SPAs), a "Skip to Content" link requires the target container to have `tabIndex={-1}` and `outline-none`. This ensures that when the link is clicked, the focus moves to the main content container without creating a visible focus ring around the entire container, which would be visually jarring.
+**Action:** When adding skip-links, always ensure the target has `id="main-content"`, `tabIndex={-1}`, and `outline-none`.
