@@ -5,3 +5,7 @@
 ## 2026-05-17 - Fix tooltip clipping in containers with overflow: hidden
 **Learning:** Tooltips rendered within containers using `overflow: hidden` (like the glass-panel sections) will be clipped unless wrapped in a Portal. This is critical for ensure that micro-feedback remains visible.
 **Action:** Always use `TooltipPrimitive.Portal` in the base Tooltip component to ensure it renders at the root level and avoids clipping.
+
+## 2026-05-18 - Implement "Skip to content" in SPAs
+**Learning:** For "Skip to content" links to work effectively in React SPAs, the target container (e.g., `<main>`) must have `tabIndex={-1}` to be programmatically focusable, and `outline-none` to prevent a focus ring from appearing around the entire page content when the link is activated.
+**Action:** When adding skip-links, ensure all page-level containers have a matching ID, `tabIndex={-1}`, and `outline-none`.
