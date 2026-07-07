@@ -5,3 +5,7 @@
 ## 2026-05-17 - Fix tooltip clipping in containers with overflow: hidden
 **Learning:** Tooltips rendered within containers using `overflow: hidden` (like the glass-panel sections) will be clipped unless wrapped in a Portal. This is critical for ensure that micro-feedback remains visible.
 **Action:** Always use `TooltipPrimitive.Portal` in the base Tooltip component to ensure it renders at the root level and avoids clipping.
+
+## 2026-05-18 - "Skip to content" link in glassmorphism theme
+**Learning:** For a "Skip to content" link in a glassmorphism/dark theme, using `focus:shadow-glow` and `focus:bg-background` ensures high visibility when focused, while `sr-only focus:not-sr-only` keeps it unobtrusive for visual users. Setting `tabIndex={-1}` and `outline-none` on the target container is essential for correct focus management in SPAs.
+**Action:** Use fixed positioning and high z-index for skip links to ensure they appear above all glass layers.
