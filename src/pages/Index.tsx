@@ -60,7 +60,11 @@ const Index = () => {
   };
 
   return (
-    <main className="min-h-screen w-full px-4 py-8 sm:px-8 sm:py-12 md:px-12 lg:px-16 lg:py-16">
+    <main
+      id="main-content"
+      tabIndex={-1}
+      className="outline-none min-h-screen w-full px-4 py-8 sm:px-8 sm:py-12 md:px-12 lg:px-16 lg:py-16"
+    >
       <div className="mx-auto w-full max-w-7xl">
         <article className="glass-panel rounded-3xl p-6 sm:p-10 md:p-14 lg:p-16 animate-fade-in">
           {/* ── HEADER GRID ─────────────────────────────── */}
