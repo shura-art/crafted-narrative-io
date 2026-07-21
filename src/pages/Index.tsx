@@ -60,7 +60,11 @@ const Index = () => {
   };
 
   return (
-    <main className="min-h-screen w-full px-4 py-8 sm:px-8 sm:py-12 md:px-12 lg:px-16 lg:py-16">
+    <main
+      id="main-content"
+      tabIndex={-1}
+      className="min-h-screen w-full px-4 py-8 sm:px-8 sm:py-12 md:px-12 lg:px-16 lg:py-16 outline-none"
+    >
       <div className="mx-auto w-full max-w-7xl">
         <article className="glass-panel rounded-3xl p-6 sm:p-10 md:p-14 lg:p-16 animate-fade-in">
           {/* ── HEADER GRID ─────────────────────────────── */}
@@ -206,7 +210,7 @@ const Index = () => {
                               type="button"
                               onClick={handleCopy}
                               aria-label={copied ? "Скопировано" : "Копировать номер для перевода"}
-                              className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-hairline bg-surface text-muted-foreground transition-all duration-300 hover:border-accent-glow/60 hover:text-accent-glow hover:shadow-[0_0_15px_rgba(var(--accent-glow-rgb),0.2)]"
+                              className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-hairline bg-surface text-muted-foreground transition-all duration-300 hover:border-accent-glow/60 hover:text-accent-glow hover:shadow-[0_0_15px_hsl(var(--accent-glow)/0.2)]"
                             >
                               {copied ? (
                                 <Check aria-hidden="true" className="h-4 w-4" />
