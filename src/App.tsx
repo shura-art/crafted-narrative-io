@@ -14,6 +14,12 @@ const App = () => (
       <Toaster />
       <Sonner />
       <BrowserRouter>
+        <a
+          href="#main-content"
+          className="sr-only focus:not-sr-only fixed top-4 left-4 z-[9999] bg-accent-glow text-black px-4 py-2 rounded font-medium focus-visible:ring-2 focus-visible:ring-accent-glow/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background outline-none transition-all duration-300"
+        >
+          Перейти к основному содержимому
+        </a>
         <Routes>
           <Route path="/" element={<Index />} />
           {/* ADD ALL CUSTOM ROUTES ABOVE THE CATCH-ALL "*" ROUTE */}
