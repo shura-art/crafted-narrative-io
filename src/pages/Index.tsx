@@ -60,7 +60,11 @@ const Index = () => {
   };
 
   return (
-    <main className="min-h-screen w-full px-4 py-8 sm:px-8 sm:py-12 md:px-12 lg:px-16 lg:py-16">
+    <main
+      id="main-content"
+      tabIndex={-1}
+      className="min-h-screen w-full px-4 py-8 sm:px-8 sm:py-12 md:px-12 lg:px-16 lg:py-16 outline-none"
+    >
       <div className="mx-auto w-full max-w-7xl">
         <article className="glass-panel rounded-3xl p-6 sm:p-10 md:p-14 lg:p-16 animate-fade-in">
           {/* ── HEADER GRID ─────────────────────────────── */}
@@ -173,6 +177,7 @@ const Index = () => {
                 <SectionTitle>Помощь проекту</SectionTitle>
                 <div className="mt-5">
                   <button
+                    type="button"
                     onClick={() => setShowDonate((s) => !s)}
                     aria-expanded={showDonate}
                     className="group relative inline-flex items-center gap-2.5 overflow-hidden rounded-full border border-hairline bg-surface-elevated px-6 py-3 text-sm font-medium text-foreground/90 transition-all duration-300 hover:border-accent-glow/60 hover:bg-surface-elevated hover:text-foreground hover:shadow-[var(--shadow-glow)] active:scale-[0.98]"
