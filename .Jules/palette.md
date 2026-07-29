@@ -5,3 +5,7 @@
 ## 2026-05-17 - Fix tooltip clipping in containers with overflow: hidden
 **Learning:** Tooltips rendered within containers using `overflow: hidden` (like the glass-panel sections) will be clipped unless wrapped in a Portal. This is critical for ensure that micro-feedback remains visible.
 **Action:** Always use `TooltipPrimitive.Portal` in the base Tooltip component to ensure it renders at the root level and avoids clipping.
+
+## 2026-05-18 - Implement global localized Skip-to-Content for SPA accessibility
+**Learning:** Adding a localized keyboard-navigable "Skip to Content" link targeting page-level containers with proper `id`, `tabIndex={-1}`, and `outline-none` attributes is a crucial and non-intrusive micro-UX pattern for single page applications, ensuring smooth navigation for assistive technologies without disrupting visual layout.
+**Action:** Always verify that main page containers define `id="main-content"` and are focus-targetable with `tabIndex={-1}` and `outline-none`.
