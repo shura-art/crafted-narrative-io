@@ -13,6 +13,12 @@ const App = () => (
     <TooltipProvider>
       <Toaster />
       <Sonner />
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only fixed left-4 top-4 z-50 rounded-md bg-accent-glow px-4 py-2 text-sm font-semibold text-black transition-all shadow-[var(--shadow-glow)] focus-visible:ring-2 focus-visible:ring-accent-glow/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background outline-none"
+      >
+        Перейти к основному содержимому
+      </a>
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Index />} />
