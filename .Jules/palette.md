@@ -5,3 +5,7 @@
 ## 2026-05-17 - Fix tooltip clipping in containers with overflow: hidden
 **Learning:** Tooltips rendered within containers using `overflow: hidden` (like the glass-panel sections) will be clipped unless wrapped in a Portal. This is critical for ensure that micro-feedback remains visible.
 **Action:** Always use `TooltipPrimitive.Portal` in the base Tooltip component to ensure it renders at the root level and avoids clipping.
+
+## 2026-05-18 - Global keyboard skip-links and cohesive focus states in glassmorphism
+**Learning:** Implementing a global "Skip to content" link in Russian ("Перейти к основному содержимому") targeting page main containers (`#main-content`) with `tabIndex={-1}` and `outline-none` provides exceptional keyboard accessibility for screen readers. In glassmorphism themes, focused elements must utilize customized, high-contrast focus visible rings (`focus-visible:ring-2 focus-visible:ring-accent-glow/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background`) to avoid default browser outline aesthetic clashes and preserve visual delight.
+**Action:** Always pair SPA routing transitions (e.g., `<Link>` over `<a>`) with accessible skip-links and custom thematic focus rings on interactive elements.
