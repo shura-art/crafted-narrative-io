@@ -11,6 +11,12 @@ const queryClient = new QueryClient();
 const App = () => (
   <QueryClientProvider client={queryClient}>
     <TooltipProvider>
+      <a
+        href="#main-content"
+        className="fixed top-4 left-4 z-50 bg-accent-glow text-black px-4 py-2 rounded-md font-medium sr-only focus:not-sr-only focus-visible:ring-2 focus-visible:ring-accent-glow/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background outline-none transition-all duration-300"
+      >
+        Перейти к основному содержимому
+      </a>
       <Toaster />
       <Sonner />
       <BrowserRouter>
