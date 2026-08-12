@@ -60,7 +60,11 @@ const Index = () => {
   };
 
   return (
-    <main className="min-h-screen w-full px-4 py-8 sm:px-8 sm:py-12 md:px-12 lg:px-16 lg:py-16">
+    <main
+      id="main-content"
+      tabIndex={-1}
+      className="min-h-screen w-full px-4 py-8 sm:px-8 sm:py-12 md:px-12 lg:px-16 lg:py-16 outline-none"
+    >
       <div className="mx-auto w-full max-w-7xl">
         <article className="glass-panel rounded-3xl p-6 sm:p-10 md:p-14 lg:p-16 animate-fade-in">
           {/* ── HEADER GRID ─────────────────────────────── */}
@@ -125,7 +129,7 @@ const Index = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Портфолио — откроется в новой вкладке"
-                  className="group inline-flex items-center gap-2 link-underline text-[15px] text-foreground/90"
+                  className="group inline-flex items-center gap-2 link-underline text-[15px] text-foreground/90 rounded-sm focus-visible:ring-2 focus-visible:ring-accent-glow/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background outline-none"
                 >
                   {PROFILE.portfolioLabel}
                   <ExternalLink
@@ -173,9 +177,10 @@ const Index = () => {
                 <SectionTitle>Помощь проекту</SectionTitle>
                 <div className="mt-5">
                   <button
+                    type="button"
                     onClick={() => setShowDonate((s) => !s)}
                     aria-expanded={showDonate}
-                    className="group relative inline-flex items-center gap-2.5 overflow-hidden rounded-full border border-hairline bg-surface-elevated px-6 py-3 text-sm font-medium text-foreground/90 transition-all duration-300 hover:border-accent-glow/60 hover:bg-surface-elevated hover:text-foreground hover:shadow-[var(--shadow-glow)] active:scale-[0.98]"
+                    className="group relative inline-flex items-center gap-2.5 overflow-hidden rounded-full border border-hairline bg-surface-elevated px-6 py-3 text-sm font-medium text-foreground/90 transition-all duration-300 hover:border-accent-glow/60 hover:bg-surface-elevated hover:text-foreground hover:shadow-[var(--shadow-glow)] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-accent-glow/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background outline-none"
                   >
                     <Heart
                       aria-hidden="true"
@@ -195,7 +200,7 @@ const Index = () => {
                           <p className="text-xs uppercase tracking-wider text-muted-foreground">Номер для перевода</p>
                           <a
                             href={`tel:${PROFILE.contacts.phoneRaw}`}
-                            className="mt-1 block font-display text-xl font-semibold tracking-wide text-foreground link-underline"
+                            className="mt-1 block font-display text-xl font-semibold tracking-wide text-foreground link-underline rounded-sm focus-visible:ring-2 focus-visible:ring-accent-glow/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background outline-none"
                           >
                             {PROFILE.donate}
                           </a>
@@ -206,7 +211,7 @@ const Index = () => {
                               type="button"
                               onClick={handleCopy}
                               aria-label={copied ? "Скопировано" : "Копировать номер для перевода"}
-                              className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-hairline bg-surface text-muted-foreground transition-all duration-300 hover:border-accent-glow/60 hover:text-accent-glow hover:shadow-[0_0_15px_rgba(var(--accent-glow-rgb),0.2)]"
+                              className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-full border border-hairline bg-surface text-muted-foreground transition-all duration-300 hover:border-accent-glow/60 hover:text-accent-glow hover:shadow-[0_0_15px_hsl(var(--accent-glow)/0.2)] focus-visible:ring-2 focus-visible:ring-accent-glow/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background outline-none"
                             >
                               {copied ? (
                                 <Check aria-hidden="true" className="h-4 w-4" />
@@ -270,7 +275,7 @@ const ContactRow = ({
       href={href}
       aria-label={ariaLabel}
       {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-      className="group flex items-center gap-3 rounded-lg px-2 py-1.5 -mx-2 transition-all duration-300 hover:bg-surface-elevated/60"
+      className="group flex items-center gap-3 rounded-lg px-2 py-1.5 -mx-2 transition-all duration-300 hover:bg-surface-elevated/60 focus-visible:ring-2 focus-visible:ring-accent-glow/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background outline-none"
     >
       <span className="flex h-9 w-9 items-center justify-center rounded-full border border-hairline bg-surface text-muted-foreground transition-all duration-300 group-hover:border-accent-glow/60 group-hover:text-accent-glow">
         {icon}
