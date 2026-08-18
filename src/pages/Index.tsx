@@ -47,6 +47,7 @@ const PROFILE = {
 const Index = () => {
   const [showDonate, setShowDonate] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [copiedPhone, setCopiedPhone] = useState(false);
 
   const handleCopy = async () => {
     try {
@@ -56,6 +57,17 @@ const Index = () => {
       setTimeout(() => setCopied(false), 2000);
     } catch (err) {
       toast.error("Не удалось скопировать номер");
+    }
+  };
+
+  const handleCopyPhone = async () => {
+    try {
+      await navigator.clipboard.writeText(PROFILE.contacts.phone);
+      setCopiedPhone(true);
+      toast.success("Телефон скопирован в буфер обмена");
+      setTimeout(() => setCopiedPhone(false), 2000);
+    } catch (err) {
+      toast.error("Не удалось скопировать телефон");
     }
   };
 
@@ -125,7 +137,7 @@ const Index = () => {
                   target="_blank"
                   rel="noopener noreferrer"
                   aria-label="Портфолио — откроется в новой вкладке"
-                  className="group inline-flex items-center gap-2 link-underline text-[15px] text-foreground/90"
+                  className="group inline-flex items-center gap-2 link-underline text-[15px] text-foreground/90 rounded focus-visible:ring-2 focus-visible:ring-accent-glow/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background outline-none"
                 >
                   {PROFILE.portfolioLabel}
                   <ExternalLink
@@ -149,6 +161,9 @@ const Index = () => {
                     href={`tel:${PROFILE.contacts.phoneRaw}`}
                     label={PROFILE.contacts.phone}
                     ariaLabel="Позвонить"
+                    onCopy={handleCopyPhone}
+                    copied={copiedPhone}
+                    copyAriaLabel="Копировать телефон"
                   />
                   <ContactRow
                     icon={<MessageCircle aria-hidden="true" className="h-4 w-4" />}
@@ -173,9 +188,10 @@ const Index = () => {
                 <SectionTitle>Помощь проекту</SectionTitle>
                 <div className="mt-5">
                   <button
+                    type="button"
                     onClick={() => setShowDonate((s) => !s)}
                     aria-expanded={showDonate}
-                    className="group relative inline-flex items-center gap-2.5 overflow-hidden rounded-full border border-hairline bg-surface-elevated px-6 py-3 text-sm font-medium text-foreground/90 transition-all duration-300 hover:border-accent-glow/60 hover:bg-surface-elevated hover:text-foreground hover:shadow-[var(--shadow-glow)] active:scale-[0.98]"
+                    className="group relative inline-flex items-center gap-2.5 overflow-hidden rounded-full border border-hairline bg-surface-elevated px-6 py-3 text-sm font-medium text-foreground/90 transition-all duration-300 hover:border-accent-glow/60 hover:bg-surface-elevated hover:text-foreground hover:shadow-[var(--shadow-glow)] active:scale-[0.98] focus-visible:ring-2 focus-visible:ring-accent-glow/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background outline-none"
                   >
                     <Heart
                       aria-hidden="true"
@@ -195,7 +211,7 @@ const Index = () => {
                           <p className="text-xs uppercase tracking-wider text-muted-foreground">Номер для перевода</p>
                           <a
                             href={`tel:${PROFILE.contacts.phoneRaw}`}
-                            className="mt-1 block font-display text-xl font-semibold tracking-wide text-foreground link-underline"
+                            className="mt-1 block font-display text-xl font-semibold tracking-wide text-foreground link-underline rounded focus-visible:ring-2 focus-visible:ring-accent-glow/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background outline-none"
                           >
                             {PROFILE.donate}
                           </a>
@@ -257,6 +273,9 @@ const ContactRow = ({
   sub,
   external,
   ariaLabel,
+  onCopy,
+  copied,
+  copyAriaLabel,
 }: {
   icon: React.ReactNode;
   href: string;
@@ -264,15 +283,18 @@ const ContactRow = ({
   sub?: string;
   external?: boolean;
   ariaLabel?: string;
+  onCopy?: () => void;
+  copied?: boolean;
+  copyAriaLabel?: string;
 }) => (
-  <li>
+  <li className="flex items-center gap-2">
     <a
       href={href}
       aria-label={ariaLabel}
       {...(external ? { target: "_blank", rel: "noopener noreferrer" } : {})}
-      className="group flex items-center gap-3 rounded-lg px-2 py-1.5 -mx-2 transition-all duration-300 hover:bg-surface-elevated/60"
+      className="group flex items-center gap-3 rounded-lg px-2 py-1.5 -mx-2 transition-all duration-300 hover:bg-surface-elevated/60 focus-visible:ring-2 focus-visible:ring-accent-glow/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background outline-none"
     >
-      <span className="flex h-9 w-9 items-center justify-center rounded-full border border-hairline bg-surface text-muted-foreground transition-all duration-300 group-hover:border-accent-glow/60 group-hover:text-accent-glow">
+      <span className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border border-hairline bg-surface text-muted-foreground transition-all duration-300 group-hover:border-accent-glow/60 group-hover:text-accent-glow">
         {icon}
       </span>
       <span className="flex flex-col">
@@ -282,6 +304,27 @@ const ContactRow = ({
         {sub && <span className="text-xs text-muted-foreground">{sub}</span>}
       </span>
     </a>
+    {onCopy && (
+      <Tooltip>
+        <TooltipTrigger asChild>
+          <button
+            type="button"
+            onClick={onCopy}
+            aria-label={copied ? "Скопировано" : (copyAriaLabel || "Копировать")}
+            className="flex h-8 w-8 shrink-0 items-center justify-center rounded-full border border-hairline bg-surface text-muted-foreground transition-all duration-300 hover:border-accent-glow/60 hover:text-accent-glow focus-visible:ring-2 focus-visible:ring-accent-glow/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background outline-none"
+          >
+            {copied ? (
+              <Check aria-hidden="true" className="h-3.5 w-3.5" />
+            ) : (
+              <Copy aria-hidden="true" className="h-3.5 w-3.5" />
+            )}
+          </button>
+        </TooltipTrigger>
+        <TooltipContent>
+          <p>{copied ? "Скопировано" : "Копировать"}</p>
+        </TooltipContent>
+      </Tooltip>
+    )}
   </li>
 );
 
