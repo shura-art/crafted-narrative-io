@@ -5,3 +5,7 @@
 ## 2026-05-17 - Fix tooltip clipping in containers with overflow: hidden
 **Learning:** Tooltips rendered within containers using `overflow: hidden` (like the glass-panel sections) will be clipped unless wrapped in a Portal. This is critical for ensure that micro-feedback remains visible.
 **Action:** Always use `TooltipPrimitive.Portal` in the base Tooltip component to ensure it renders at the root level and avoids clipping.
+
+## 2026-05-18 - Standardize visible focus rings for dark glassmorphic themes
+**Learning:** In dark glassmorphic layouts, default browser focus outlines are often low-contrast, visually jarring, or obscured by dark backgrounds. Standardizing keyboard focus indicators using `focus-visible:ring-2 focus-visible:ring-accent-glow/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background` ensures high contrast and clarity for keyboard navigation while harmonizing seamlessly with amber glow theme accents.
+**Action:** Apply consistent `focus-visible:ring-2 focus-visible:ring-accent-glow/60 focus-visible:ring-offset-2 focus-visible:ring-offset-background outline-none` to interactive components and ensure trigger buttons have explicit `type="button"`.
